@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
-
+import 'package:azlistview/azlistview.dart';
 import 'package:flutter_contacts/config.dart';
 import 'package:flutter_contacts/vcard.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
@@ -65,7 +65,7 @@ import 'package:flutter_contacts/flutter_contacts.dart';
 ///     [Address.neighborhood] is not available on iOS, so if you save a contact
 ///     with data for [Address.neighborhood] on iOS, that data will be lost
 ///   - [accounts] represent raw accounts on Android and containers on iOS
-class Contact {
+class Contact extends ISuspensionBean {
   /// The unique identifier of the contact.
   String id;
 
@@ -386,4 +386,13 @@ class Contact {
   bool _listEqual(List<dynamic> aa, List<dynamic> bb) =>
       aa.length == bb.length &&
       Iterable.generate(aa.length, (i) => i).every((i) => aa[i] == bb[i]);
+
+  @override
+  String getSuspensionTag() {
+    if (displayName.isNotEmpty) {
+      return displayName[0].toUpperCase();
+    } else {
+      return '#';
+    }
+  }
 }
